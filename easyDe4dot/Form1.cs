@@ -140,8 +140,10 @@ namespace easyDe4dot
             sinfo.FileName = chk64.Checked ? de4dot64 : de4dot;
             sinfo.RedirectStandardOutput = true;
             sinfo.UseShellExecute = false;
-            sinfo.CreateNoWindow = true;
+            sinfo.CreateNoWindow = true; 
+            process.OutputDataReceived += new DataReceivedEventHandler(DataReceived);
             process.StartInfo = sinfo;
+            
 
             txtLog.Text = "Command line : " + sinfo.Arguments + Environment.NewLine;
             txtLog.AppendText("Starting de4dot" + Environment.NewLine);
@@ -150,21 +152,19 @@ namespace easyDe4dot
             {
                 txtLog.AppendText("Process started" + Environment.NewLine);
                 txtLog.AppendText("----------------" + Environment.NewLine);
-                
-                while (!process.HasExited)
-                {
-                    string line = process.StandardOutput.ReadLine();
-                    if (line!=null && line != "")
-                        txtLog.AppendText(line +Environment.NewLine);
-                }
+                process.BeginOutputReadLine();
+                process.WaitForExit();
                 txtLog.AppendText("----------------" + Environment.NewLine);
-                txtLog.AppendText("Process terminated");
-
+                txtLog.AppendText("Process exited" + Environment.NewLine);
             }
             else
                 txtLog.AppendText("!Failed to start process" + Environment.NewLine);
         }
 
+        private void DataReceived(object Sender,DataReceivedEventArgs e)
+        {
+            txtLog.AppendText(e.Data + Environment.NewLine);
+        }
         private void btnClear_Click(object sender, EventArgs e)
         {
             txtLog.Text = "";
