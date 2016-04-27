@@ -137,6 +137,7 @@ namespace easyDe4dot
                 }
             }
             sinfo.Arguments = string.Join(" ", args);
+            sinfo.EnvironmentVariables.Add("SHELL", "");
             sinfo.FileName = chk64.Checked ? de4dot64 : de4dot;
             sinfo.RedirectStandardOutput = true;
             sinfo.UseShellExecute = false;
