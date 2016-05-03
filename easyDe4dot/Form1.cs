@@ -124,7 +124,7 @@ namespace easyDe4dot
                 }
                 args.Add((string)cmbStrype.SelectedItem);
 
-                string[] toks = txtStrtok.Text.Split(' ');
+                string[] toks = txtStrtok.Text.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 if (toks.Length == 0)
                 {
                     MessageBox.Show("Strtok can't be empty");
